@@ -2,10 +2,22 @@
   * Wrapper for all the node types
 */
 
-const Nodes: React.FC = () => {
+import BuilderHandle from '../Handle';
+
+const Nodes: React.FC<{ data: any }> = (props) => {
   return (
-    <div>
-      Custom Node
+    <div className="border">
+      <p>{props.data.label}</p>
+      <BuilderHandle
+	type="target"
+	position="top"
+	handleId={props.data.handleId}
+      />
+      <BuilderHandle
+	type="source"
+	position="bottom"
+	handleId={props.data.handleId}
+      />
     </div>
   )
 }
