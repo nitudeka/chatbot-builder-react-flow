@@ -18,8 +18,8 @@ const BuilderHandle: React.FC<IHandleProps> = (props) => {
   return (
     <Handle
       style={{
-        marginTop: "-1px",
-        marginBottom: "-1px",
+        marginTop: "-8px",
+        marginBottom: "-8px",
         padding: "5px",
         backgroundColor: bgClr,
       }}
