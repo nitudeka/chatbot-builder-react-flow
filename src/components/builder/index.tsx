@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { ReactFlow, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
+import { ReactFlow, Background, applyNodeChanges, applyEdgeChanges, addEdge } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
  
 const initialNodes = [
@@ -34,7 +34,9 @@ export default function Builder() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
-      />
+      >
+        <Background gap={24} size={1} />
+      </ReactFlow>
     </div>
   );
 }
