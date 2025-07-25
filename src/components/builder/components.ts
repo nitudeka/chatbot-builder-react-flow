@@ -8,6 +8,7 @@ const components: any[] = [
     type: "message",
     label: "Message",
     icon: IconMessage,
+    description: "Send a message"
   },
 ];
 
