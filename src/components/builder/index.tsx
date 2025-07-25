@@ -37,7 +37,7 @@ const Builder: React.FC = () => {
     [],
   );
 
-  const onDragOver = useCallback((event) => {
+  const onDragOver = useCallback((event: any) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
@@ -79,6 +79,7 @@ const Builder: React.FC = () => {
 	nodeTypes={nodeTypes}
 	onDragOver={onDragOver}
 	onDrop={onDrop}
+	proOptions={{ hideAttribution: true }}
         fitView
       >
 	<Controls />
