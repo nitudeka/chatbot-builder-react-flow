@@ -1,8 +1,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { v4 } from 'uuid';
 import { ReactFlow, Background, Panel, applyNodeChanges, applyEdgeChanges, addEdge, Controls, ReactFlowProvider, useReactFlow } from '@xyflow/react';
+import { IconDeviceFloppy, IconPlus } from '@tabler/icons-react';
 import CustomNode from './nodes';
-import AddNodeButton from './AddNodeButton';
+import Button from '../button';
 import Sidebar from './Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
 import { ConfigureNodeProvider, useConfigureNode } from './contexts/ConfigureNodeContext';
@@ -86,10 +87,17 @@ const Builder: React.FC = () => {
       >
 	<Controls />
         <Background gap={24} size={1} />
-	<Panel position="top-right">
-	  <AddNodeButton onClick={() => setIsSideDrawerOpen(true)}>
-	    Add Node
-	  </AddNodeButton>
+	<Panel position="top-right" className="flex gap-4">
+	  <Button onClick={() => setIsSideDrawerOpen(true)}>
+	    <div className="flex gap-2">
+	      <IconPlus /> Add Node
+	    </div>
+	  </Button>
+	  <Button onClick={() => setIsSideDrawerOpen(true)}>
+	    <div className="flex gap-2">
+	      <IconDeviceFloppy /> Save Flow
+	    </div>
+	  </Button>
 	</Panel>
       </ReactFlow>
       <Sidebar isOpen={isSideDrawerOpen} onClose={() => setIsSideDrawerOpen(false)} />
