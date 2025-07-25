@@ -1,4 +1,5 @@
 import { Handle, Position } from "@xyflow/react";
+import { v4 } from "uuid";
 
 interface IHandleProps {
   type: 'target' | 'source';
@@ -23,7 +24,7 @@ const BuilderHandle: React.FC<IHandleProps> = (props) => {
         padding: "5px",
         backgroundColor: bgClr,
       }}
-      id={props.handleId || String(Date.now())}
+      id={props.handleId || v4()}
       type={props.type}
       position={positions[props.position]}
       isConnectable={props.isConnectable}
