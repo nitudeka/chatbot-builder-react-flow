@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { v4 } from 'uuid';
-import { ReactFlow, Background, Panel, applyNodeChanges, applyEdgeChanges, addEdge, Controls, ReactFlowProvider, useReactFlow, type ReactFlowInstance } from '@xyflow/react';
+import { ReactFlow, Background, Panel, applyNodeChanges, applyEdgeChanges, addEdge, Controls, ReactFlowProvider, useReactFlow, type ReactFlowInstance, type Node, type Edge, type NodeChange, type EdgeChange, type Connection } from '@xyflow/react';
 import { toast } from 'react-toastify';
 import { IconDeviceFloppy, IconPlus } from '@tabler/icons-react';
 import CustomNode from './nodes';
@@ -18,22 +18,22 @@ const nodeTypes = {
  
 const Builder: React.FC = () => {
   const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false)
-  const [nodes, setNodes] = useState([]);
-  const [edges, setEdges] = useState([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
+  const [edges, setEdges] = useState<Edge[]>([]);
   const [node] = useDnD();
   const { selectedNode, rfInstance, setRfInstance } = useConfigureNode();
   const { screenToFlowPosition } = useReactFlow();
  
   const onNodesChange = useCallback(
-    (changes) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
+    (changes: NodeChange[]) => setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot)),
     [],
   );
   const onEdgesChange = useCallback(
-    (changes) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
+    (changes: EdgeChange[]) => setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
     [],
   );
   const onConnect = useCallback(
-    (params) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    (params: Connection) => setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
     [],
   );
 
@@ -128,7 +128,6 @@ const Builder: React.FC = () => {
       rfInstance.setViewport({ x, y, zoom });
     }
   }, [rfInstance, setNodes, setEdges]);
-
 
   useEffect(() => {
     if (selectedNode) setIsSideDrawerOpen(false)

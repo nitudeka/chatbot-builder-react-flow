@@ -8,12 +8,12 @@ const NodeConfigurationSidebar: React.FC = () => {
   const methods = useForm()
 
   const updateNode = (data: any) => {
-    const nodes = rfInstance.getNodes();
+    const nodes = rfInstance?.getNodes() || [];
     const nodeIndx = nodes.findIndex((node: any) => node.data.id === selectedNode.id);
 
     if (nodeIndx > -1) {
       nodes[nodeIndx].data = { ...nodes[nodeIndx].data, ...data };
-      rfInstance.setNodes(nodes);
+      rfInstance?.setNodes(nodes);
     }
 
     setSelectedNode(null)

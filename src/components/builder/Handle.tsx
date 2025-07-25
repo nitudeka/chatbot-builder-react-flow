@@ -33,4 +33,3 @@ const BuilderHandle: React.FC<IHandleProps> = (props) => {
 };
 
 export default BuilderHandle;
-

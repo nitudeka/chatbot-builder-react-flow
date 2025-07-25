@@ -1,7 +1,3 @@
-/*
-  * Wrapper for all the node types
-*/
-
 import { useMemo } from 'react';
 import type { NodeProps } from '@xyflow/react';
 import BuilderHandle from '../Handle';

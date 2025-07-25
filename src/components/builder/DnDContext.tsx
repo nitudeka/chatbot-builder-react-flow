@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
  
-const DnDContext = createContext([null, (_) => {}]);
+const DnDContext = createContext<[any, (node: any) => void]>([null, (_: any) => {}]);
  
 export const DnDProvider: React.FC<{ children: React.ReactNode  }> = ({ children }) => {
   const [node, setNode] = useState(null);
