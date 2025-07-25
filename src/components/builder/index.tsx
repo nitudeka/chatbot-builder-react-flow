@@ -63,10 +63,18 @@ const Builder: React.FC = () => {
       setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot)),
     [],
   );
-  // Handle connecting nodes with an edge
+  // Handle connecting nodes with an edge (only one outgoing edge per source handle)
   const onConnect = useCallback(
-    (params: Connection) =>
-      setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot)),
+    (params: Connection) => {
+      setEdges((edgesSnapshot) => {
+        // Only allow one outgoing edge per source handle
+        const exists = edgesSnapshot.some(
+          (e) => e.source === params.source && e.sourceHandle === params.sourceHandle
+        );
+        if (exists) return edgesSnapshot;
+        return addEdge(params, edgesSnapshot);
+      });
+    },
     [],
   );
 
