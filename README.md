@@ -1,69 +1,77 @@
-# React + TypeScript + Vite
+# Chatbot Builder
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A visual, drag-and-drop tool for building chatbot conversation flows.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Visual Flow Editor:** Build chatbot logic using a node-based interface powered by [React Flow](https://reactflow.dev/).
+- **Drag-and-Drop Nodes:** Add nodes from the sidebar and place them anywhere on the canvas.
+- **Node Configuration:** Click a node to configure its properties (e.g., message text).
+- **Connect Nodes:** Draw connections to define the flow of conversation.
+- **Flow Validation:** Prevents saving flows with disconnected nodes.
+- **Save & Restore:** Save your chatbot flow to local storage and restore it automatically.
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) (build tool)
+- [React Flow](https://reactflow.dev/) (visual flow editor)
+- [TailwindCSS](https://tailwindcss.com/) (utility-first CSS)
+- [React Hook Form](https://react-hook-form.com/) (form management)
+- [React Toastify](https://fkhadra.github.io/react-toastify/) (notifications)
+- [Tabler Icons](https://tabler.io/icons) (icons)
+- [UUID](https://www.npmjs.com/package/uuid) (unique IDs)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Getting Started
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### Prerequisites
+- Node.js (v16+ recommended)
+- Yarn or npm
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Installation
+
+```bash
+git clone https://github.com/nitudeka/chatbot-builder-react-flow.git
+cd chatbot-builder
+yarn install # or npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Development
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+yarn dev # or npm run dev
+```
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Open [http://localhost:5173](http://localhost:5173) to view the app.
+
+### Build for Production
+
+```bash
+yarn build # or npm run build
+```
+
+## Usage
+
+1. **Add Nodes:** Click "Add Node" to open the sidebar, then drag a node (e.g., Message) onto the canvas.
+2. **Connect Nodes:** Drag from the handle at the bottom of one node to the top of another to create a connection.
+3. **Configure Nodes:** Click a node to open its configuration sidebar. For message nodes, enter the message text and save.
+4. **Save Flow:** Click "Save Flow" to store your chatbot design in local storage. Flows are restored automatically on reload.
+
+## Folder Structure
+
+```
+chatbot-builder/
+├── src/
+│   ├── components/
+│   │   └── builder/         # Main builder logic, nodes, sidebars, DnD context
+│   │   └── button/          # Reusable button component
+│   │   └── sideDrawer/      # Sidebar/Drawer UI
+│   ├── constants/           # App constants
+│   ├── assets/              # Static assets
+│   ├── App.tsx              # App entry point
+│   └── main.tsx             # React root
+├── public/                  # Static public assets
+├── index.html               # HTML template
+├── package.json             # Project metadata & dependencies
+└── README.md                # Project documentation
 ```
