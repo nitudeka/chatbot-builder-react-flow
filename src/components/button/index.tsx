@@ -1,8 +1,4 @@
-/*
-  * Button to add a node to the flow
-*/
-
-const AddNodeButton: React.FC<{ onClick: () => void; children: React.ReactNode  }> = (props) => {
+const Button: React.FC<{ onClick: () => void; children: React.ReactNode  }> = (props) => {
   return (
     <div onClick={props.onClick} className="cursor-pointer relative inline-block px-4 py-2 font-medium group">
       <span className="absolute inset-0 w-full h-full transition duration-200 ease-out transform translate-x-1 translate-y-1 bg-black group-hover:-translate-x-0 group-hover:-translate-y-0"></span>
@@ -14,4 +10,5 @@ const AddNodeButton: React.FC<{ onClick: () => void; children: React.ReactNode  
   )
 }
 
-export default AddNodeButton
+export default Button
+
