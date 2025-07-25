@@ -14,12 +14,13 @@ const Nodes: React.FC<{ data: any }> = (props) => {
       <BuilderHandle
 	type="target"
 	position="top"
-	handleId={props.data.handleId}
+	handleId={props.data.id}
+	isConnectable={true}
       />
       <BuilderHandle
 	type="source"
 	position="bottom"
-	handleId={props.data.handleId}
+	handleId={props.data.id}
       />
       </div>
     </div>
