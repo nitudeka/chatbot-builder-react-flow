@@ -8,10 +8,11 @@ import SideDrawer from '../sideDrawer';
 import components from './components';
 
 const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void; }> = (props) => {
-  const [_, setType] = useDnD();
+  const [_, setNode] = useDnD();
 
-  const onDragStart = (event: any, nodeType: string) => {
-    setType(nodeType);
+  const onDragStart = (event: any, component: any) => {
+    // we don't need to store the icon of the node
+    setNode({...component, icon: undefined });
     event.dataTransfer.effectAllowed = 'move';
   };
 
@@ -20,7 +21,7 @@ const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void; }> = (props) => 
       <div className="pt-2">
       {components.map(component => {
 	return (
-	  <div key={component.type} draggable onDragStart={(e) => onDragStart(e, component.type)} className="cursor-pointer flex border">
+	  <div key={component.type} draggable onDragStart={(e) => onDragStart(e, component)} className="cursor-pointer flex border">
 	    <div className="border-r flex flex-col items-center justify-center px-2 py-1.5">
 	      <component.icon />
 	      <span className="text-xs">{component.label}</span>
