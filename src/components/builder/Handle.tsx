@@ -2,7 +2,7 @@ import { Handle, Position } from "@xyflow/react";
 import { v4 } from "uuid";
 
 interface IHandleProps {
-  type: 'target' | 'source';
+  type: "target" | "source";
   position: keyof typeof positions;
   handleId?: string;
   isConnectable?: boolean;

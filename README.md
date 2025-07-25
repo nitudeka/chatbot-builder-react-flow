@@ -25,6 +25,7 @@ A visual, drag-and-drop tool for building chatbot conversation flows.
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v16+ recommended)
 - Yarn or npm
 

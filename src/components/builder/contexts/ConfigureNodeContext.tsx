@@ -1,6 +1,6 @@
-import type { ReactFlowInstance } from '@xyflow/react';
-import { createContext, useContext, useState } from 'react';
-import type { Dispatch, SetStateAction } from 'react';
+import type { ReactFlowInstance } from "@xyflow/react";
+import { createContext, useContext, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 // Context type for node configuration
 interface ConfigureNodeContextType {
@@ -19,12 +19,16 @@ const ConfigureNodeContext = createContext<ConfigureNodeContextType>({
 });
 
 // Provider for ConfigureNodeContext
-export const ConfigureNodeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ConfigureNodeProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [selectedNode, setSelectedNode] = useState<any>(null);
   const [rfInstance, setRfInstance] = useState<ReactFlowInstance | null>(null);
 
   return (
-    <ConfigureNodeContext.Provider value={{ selectedNode, setSelectedNode, rfInstance, setRfInstance }}>
+    <ConfigureNodeContext.Provider
+      value={{ selectedNode, setSelectedNode, rfInstance, setRfInstance }}
+    >
       {children}
     </ConfigureNodeContext.Provider>
   );
@@ -35,5 +39,4 @@ export default ConfigureNodeContext;
 // Hook to access ConfigureNodeContext
 export const useConfigureNode = () => {
   return useContext(ConfigureNodeContext);
-}
-
+};

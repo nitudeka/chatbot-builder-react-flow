@@ -7,4 +7,3 @@ export type NodeData = {
   id: string;
   message: string;
 };
-

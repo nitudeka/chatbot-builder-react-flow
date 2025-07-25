@@ -1,5 +1,5 @@
-import Builder from '../src/components/builder'
-import { ToastContainer } from 'react-toastify';
+import Builder from "../src/components/builder";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -7,7 +7,7 @@ function App() {
       <Builder />
       <ToastContainer />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
