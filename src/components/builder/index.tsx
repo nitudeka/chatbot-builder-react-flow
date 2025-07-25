@@ -1,27 +1,24 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
+import { v4 } from 'uuid';
 import { ReactFlow, Background, Panel, applyNodeChanges, applyEdgeChanges, addEdge, Controls, ReactFlowProvider, useReactFlow } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
 import CustomNode from './nodes';
 import AddNodeButton from './AddNodeButton';
 import Sidebar from './Sidebar';
 import { DnDProvider, useDnD } from './DnDContext';
-import { v4 } from 'uuid';
+import { ConfigureNodeProvider, useConfigureNode } from './contexts/ConfigureNodeContext';
+import NodeConfigurationSidebar from './NodeConfigurationSidebar';
+import '@xyflow/react/dist/style.css';
  
-const initialNodes = [
-  { id: 'n1', type: 'customNode', position: { x: 0, y: 0 }, data: { label: 'Node 1' } },
-  { id: 'n2', position: { x: 0, y: 100 }, data: { label: 'Node 2' } },
-];
-const initialEdges = [{ id: 'n1-n2', source: 'n1', target: 'n2' }];
-
 const nodeTypes = {
   customNode: CustomNode
 }
  
 const Builder: React.FC = () => {
   const [isSideDrawerOpen, setIsSideDrawerOpen] = useState(false)
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-  const [type] = useDnD();
+  const [nodes, setNodes] = useState([]);
+  const [edges, setEdges] = useState([]);
+  const [node] = useDnD();
+  const { selectedNode, setRfInstance } = useConfigureNode();
   const { screenToFlowPosition } = useReactFlow();
  
   const onNodesChange = useCallback(
@@ -47,7 +44,7 @@ const Builder: React.FC = () => {
       event.preventDefault();
  
       // check if the dropped element is valid
-      if (!type) {
+      if (!node) {
         return;
       }
  
@@ -60,13 +57,17 @@ const Builder: React.FC = () => {
         id: v4(),
         type: 'customNode',
         position,
-        data: { type, label: `${type} node` },
+        data: node,
       };
  
       setNodes((nds) => nds.concat(newNode));
     },
-    [screenToFlowPosition, type],
+    [screenToFlowPosition, node],
   );
+
+  useEffect(() => {
+    if (selectedNode) setIsSideDrawerOpen(false)
+  }, [selectedNode])
  
   return (
     <div className="h-screen w-screen">
@@ -80,6 +81,7 @@ const Builder: React.FC = () => {
 	onDragOver={onDragOver}
 	onDrop={onDrop}
 	proOptions={{ hideAttribution: true }}
+	onInit={setRfInstance}
         fitView
       >
 	<Controls />
@@ -91,6 +93,7 @@ const Builder: React.FC = () => {
 	</Panel>
       </ReactFlow>
       <Sidebar isOpen={isSideDrawerOpen} onClose={() => setIsSideDrawerOpen(false)} />
+      <NodeConfigurationSidebar />
     </div>
   );
 }
@@ -98,7 +101,9 @@ const Builder: React.FC = () => {
 export default () => (
   <ReactFlowProvider>
     <DnDProvider>
-      <Builder />
+      <ConfigureNodeProvider>
+	<Builder />
+      </ConfigureNodeProvider>
     </DnDProvider>
   </ReactFlowProvider>
 )

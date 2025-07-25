@@ -3,6 +3,7 @@
 */
 
 import React from 'react';
+import { v4 } from 'uuid';
 import { useDnD } from './DnDContext';
 import SideDrawer from '../sideDrawer';
 import components from './components';
@@ -12,7 +13,7 @@ const Sidebar: React.FC<{ isOpen: boolean; onClose: () => void; }> = (props) => 
 
   const onDragStart = (event: any, component: any) => {
     // we don't need to store the icon of the node
-    setNode({...component, icon: undefined });
+    setNode({...component, id: v4(), icon: undefined });
     event.dataTransfer.effectAllowed = 'move';
   };
 

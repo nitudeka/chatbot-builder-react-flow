@@ -1,7 +1,14 @@
+import { useEffect } from "react"
 import { useFormContext } from "react-hook-form"
+import { useConfigureNode } from "../contexts/ConfigureNodeContext"
 
 const MessageNode: React.FC = () => {
-  const { register } = useFormContext()
+  const { register, setValue } = useFormContext()
+  const { selectedNode } = useConfigureNode()
+
+  useEffect(() => {
+    setValue('message', selectedNode.message)
+  }, [selectedNode])
 
   return (
     <div>
