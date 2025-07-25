@@ -15,12 +15,13 @@ const NodeConfigurationSidebar: React.FC = () => {
       nodes[nodeIndx].data = { ...nodes[nodeIndx].data, ...data };
       rfInstance.setNodes(nodes);
     }
+
+    setSelectedNode(null)
   };
 
   const onSave = (data: any) => {
     updateNode({ ...data });
   };
-
 
   return (
     <SideDrawer title="Configure Node" isOpen={!!selectedNode} onClose={() => setSelectedNode(null)}>
