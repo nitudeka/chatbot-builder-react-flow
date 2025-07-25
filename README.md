@@ -2,6 +2,9 @@
 
 A visual, drag-and-drop tool for building chatbot conversation flows.
 
+## Demo
+Click [here](https://chatbot.iamnitudeka.xyz) to view the demo site.
+
 ## Features
 
 - **Visual Flow Editor:** Build chatbot logic using a node-based interface powered by [React Flow](https://reactflow.dev/).
