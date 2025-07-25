@@ -5,7 +5,7 @@ const SideDrawer: React.FC<{ title: string; isOpen: boolean; onClose: () => void
     <div className="relative">
       <div className="border-l flex flex-col justify-between w-72 bg-white h-full fixed top-0 right-0">
 	<div>
-	  <div className="px-2 font-semibold text-lg border-b">
+	  <div className="p-2 font-semibold text-lg border-b">
 	    {props.title}
 	  </div>
 	  <div className="px-2">
