@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { v4 } from 'uuid';
-import { ReactFlow, Background, Panel, applyNodeChanges, applyEdgeChanges, addEdge, Controls, ReactFlowProvider, useReactFlow } from '@xyflow/react';
+import { ReactFlow, Background, Panel, applyNodeChanges, applyEdgeChanges, addEdge, Controls, ReactFlowProvider, useReactFlow, type ReactFlowInstance } from '@xyflow/react';
+import { toast } from 'react-toastify';
 import { IconDeviceFloppy, IconPlus } from '@tabler/icons-react';
 import CustomNode from './nodes';
 import Button from '../button';
@@ -9,6 +10,7 @@ import { DnDProvider, useDnD } from './DnDContext';
 import { ConfigureNodeProvider, useConfigureNode } from './contexts/ConfigureNodeContext';
 import NodeConfigurationSidebar from './NodeConfigurationSidebar';
 import '@xyflow/react/dist/style.css';
+import { FLOW_SAVE_KEY } from '../../constants';
  
 const nodeTypes = {
   customNode: CustomNode
@@ -19,7 +21,7 @@ const Builder: React.FC = () => {
   const [nodes, setNodes] = useState([]);
   const [edges, setEdges] = useState([]);
   const [node] = useDnD();
-  const { selectedNode, setRfInstance } = useConfigureNode();
+  const { selectedNode, rfInstance, setRfInstance } = useConfigureNode();
   const { screenToFlowPosition } = useReactFlow();
  
   const onNodesChange = useCallback(
@@ -39,6 +41,56 @@ const Builder: React.FC = () => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
+
+  const validateFlow = useCallback(
+    (flow: ReturnType<ReactFlowInstance["toObject"]>) => {
+      let error: { error: string; node: Node } | null = null;
+      const edgesObj: Record<string, boolean | Node> = {};
+
+      flow.edges.forEach((edge) => {
+        edgesObj[edge.source] = true;
+        edgesObj[edge.target] = true;
+      });
+
+      flow.nodes.forEach((node) => {
+        delete node.data.icon;
+
+        if (!error) {
+          if (edgesObj[node.id]) {
+            delete edgesObj[node.id];
+          } else {
+            edgesObj[node.id] = node;
+          }
+        }
+      });
+
+      if (!error && Object.keys(edgesObj).length && flow.nodes.length > 1) {
+        error = {
+          error: "Can't have disconnected nodes",
+          node: edgesObj[Object.keys(edgesObj)[0]] as Node,
+        };
+      }
+
+      return error;
+    },
+    [],
+  );
+
+  const onSave = useCallback(() => {
+    if (rfInstance) {
+      const flow = rfInstance.toObject();
+      const error = validateFlow(flow);
+
+      if (error) {
+	toast.error("Please remove the disconnected nodes", {
+	  position: "bottom-right"
+	})
+      } else {
+	localStorage.setItem(FLOW_SAVE_KEY, JSON.stringify(flow))
+	toast.success("Flow saved successfully!", { position: "bottom-right"})
+      }
+    }
+  }, [rfInstance])
 
   const onDrop = useCallback(
     (event: any) => {
@@ -66,9 +118,29 @@ const Builder: React.FC = () => {
     [screenToFlowPosition, node],
   );
 
+  const onRestore = useCallback((flow: any) => {
+    if (rfInstance) {
+      const { x = 0, y = 0, zoom = 1 } = flow.viewport;
+      const nodes = flow.nodes || [];
+
+      setNodes(nodes);
+      setEdges(flow.edges || []);
+      rfInstance.setViewport({ x, y, zoom });
+    }
+  }, [rfInstance, setNodes, setEdges]);
+
+
   useEffect(() => {
     if (selectedNode) setIsSideDrawerOpen(false)
   }, [selectedNode])
+
+  useEffect(() => {
+    const savedFlow = localStorage.getItem(FLOW_SAVE_KEY)
+
+    if (savedFlow) {
+      onRestore(JSON.parse(savedFlow))
+    }
+  }, [rfInstance])
  
   return (
     <div className="h-screen w-screen">
@@ -93,7 +165,7 @@ const Builder: React.FC = () => {
 	      <IconPlus /> Add Node
 	    </div>
 	  </Button>
-	  <Button onClick={() => setIsSideDrawerOpen(true)}>
+	  <Button onClick={onSave}>
 	    <div className="flex gap-2">
 	      <IconDeviceFloppy /> Save Flow
 	    </div>
