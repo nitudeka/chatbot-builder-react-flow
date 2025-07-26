@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import type { NodeProps } from "@xyflow/react";
 import BuilderHandle from "../Handle";
 import { useConfigureNode } from "../contexts/ConfigureNodeContext";
+import components from "../components";
 import type { NodeData, NodeTypes } from "../types";
 
 // import all the available nodes
@@ -17,6 +18,8 @@ const Nodes: React.FC<{ data: NodeData } & NodeProps> = (props) => {
   const { selectedNode, setSelectedNode } = useConfigureNode();
 
   const Node = nodes[props.data.type] || (() => <></>);
+  const component = components.find(c => c.type === props.data.type)
+  const ComponentIcon = component?.icon
 
   // Handle node click to select for configuration
   const onNodeClick = () => {
@@ -54,7 +57,10 @@ const Nodes: React.FC<{ data: NodeData } & NodeProps> = (props) => {
           "relative group-hover:text-white",
         ].join(" ")}
       >
-        <p className="text-sm">{props.data.label}</p>
+	<div className="flex gap-1 items-center">
+	  {ComponentIcon && <ComponentIcon size={20} />}
+	  <p className="text-sm">{props.data.label}</p>
+	</div>
 	<Node { ...props.data } />
         {/* Handles for connecting nodes */}
         <BuilderHandle
