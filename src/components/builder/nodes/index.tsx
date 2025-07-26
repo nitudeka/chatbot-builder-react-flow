@@ -2,11 +2,21 @@ import { useMemo } from "react";
 import type { NodeProps } from "@xyflow/react";
 import BuilderHandle from "../Handle";
 import { useConfigureNode } from "../contexts/ConfigureNodeContext";
+import type { NodeData, NodeTypes } from "../types";
+
+// import all the available nodes
+import NodeMessage from "./Message";
+
+const nodes: { [key in NodeTypes]: React.FC<Partial<NodeData>> } = {
+  message: NodeMessage,
+};
 
 // Custom node component for React Flow
-const Nodes: React.FC<{ data: any } & NodeProps> = (props) => {
+const Nodes: React.FC<{ data: NodeData } & NodeProps> = (props) => {
   // Access selected node and setter from context
   const { selectedNode, setSelectedNode } = useConfigureNode();
+
+  const Node = nodes[props.data.type] || (() => <></>);
 
   // Handle node click to select for configuration
   const onNodeClick = () => {
@@ -45,6 +55,7 @@ const Nodes: React.FC<{ data: any } & NodeProps> = (props) => {
         ].join(" ")}
       >
         <p className="text-sm">{props.data.label}</p>
+	<Node { ...props.data } />
         {/* Handles for connecting nodes */}
         <BuilderHandle
           type="target"
